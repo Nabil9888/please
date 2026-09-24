@@ -5,139 +5,315 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Please Follow Me Again 🥺</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Comic Sans MS','Comic Sans',cursive}
-body{min-height:100vh;display:flex;justify-content:center;align-items:center;
-background:linear-gradient(-45deg,#4facfe,#a18cd1,#ff9a9e,#a18cd1,#4facfe);
-background-size:400% 400%;animation:grad 8s ease infinite;overflow:hidden;position:relative;padding:16px}
-@keyframes grad{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
-.bg{position:fixed;font-size:2em;opacity:.15;pointer-events:none;color:#fff}
-.card{text-align:center;padding:44px 32px;background:rgba(255,255,255,.98);border-radius:30px;
-box-shadow:0 25px 70px rgba(161,140,209,.5);max-width:600px;width:100%;
-animation:in .8s ease-out;position:relative;z-index:10}
-@keyframes in{from{opacity:0;transform:translateY(-40px) scale(.9)}to{opacity:1;transform:translateY(0) scale(1)}}
-#main{font-size:2.3em;color:#a18cd1;margin-bottom:40px;font-weight:bold;line-height:1.5;
-animation:pulse 2s ease-in-out infinite}
-@media(max-width:700px){#main{font-size:1.6em}}
-@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
-.btns{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;min-height:180px;
-align-items:center;position:relative;padding:10px}
-button{font-family:inherit;font-size:1.25em;padding:18px 34px;border:none;border-radius:50px;
-cursor:pointer;font-weight:bold;box-shadow:0 8px 25px rgba(0,0,0,.2);transition:transform .2s}
-#yes{background:linear-gradient(135deg,#4facfe,#00f2fe);color:#fff;position:relative;z-index:5}
-#yes:hover{transform:translateY(-6px) scale(1.08)}
-#no{background:linear-gradient(135deg,#ff9a9e,#ff7eb3);color:#fff;position:absolute;
-transition:all .15s ease-out;z-index:10}
-#count{margin-top:18px;font-size:1.05em;color:#a18cd1;font-weight:bold;min-height:28px}
-#emojis{font-size:3em;margin-top:24px;letter-spacing:8px;animation:bounce 1s ease infinite}
-@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
+:root{
+  --c1:#4facfe; --c2:#a18cd1; --c3:#ff9a9e; --c4:#00f2fe; --c5:#ff7eb3;
+  --card-bg:rgba(255,255,255,.98);
+  --text:#5a4a8a;
+  --shadow:0 25px 70px rgba(161,140,209,.45);
+  --radius:30px;
+  --font:'Comic Sans MS','Comic Sans','Trebuchet MS',cursive;
+}
+*{margin:0;padding:0;box-sizing:border-box;font-family:var(--font)}
+html,body{min-height:100vh}
+body{
+  display:flex;justify-content:center;align-items:center;
+  background:linear-gradient(-45deg,var(--c1),var(--c2),var(--c3),var(--c2),var(--c1));
+  background-size:400% 400%;
+  animation:grad 12s ease infinite;
+  overflow:hidden;position:relative;
+  padding:16px;
+  -webkit-tap-highlight-color:transparent;
+}
+@keyframes grad{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
+.bg{
+  position:fixed;font-size:clamp(1.5em,4vw,2.4em);
+  opacity:.2;pointer-events:none;color:#fff;
+  animation:floatBg 7s ease-in-out infinite;
+}
+.bg:nth-child(2){animation-delay:-1.7s}
+.bg:nth-child(3){animation-delay:-3.5s}
+.bg:nth-child(4){animation-delay:-5.2s}
+@keyframes floatBg{
+  0%,100%{transform:translateY(0) rotate(0)}
+  50%{transform:translateY(-22px) rotate(8deg)}
+}
+
+.card{
+  text-align:center;
+  padding:clamp(28px,5vw,44px) clamp(22px,4vw,32px);
+  background:var(--card-bg);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  max-width:600px;width:100%;
+  animation:in .8s cubic-bezier(.22,1.4,.36,1) both;
+  position:relative;z-index:10;
+  backdrop-filter:blur(6px);
+}
+@keyframes in{
+  from{opacity:0;transform:translateY(-40px) scale(.92)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+
+#main{
+  font-size:clamp(1.4em,4vw,2.3em);
+  color:var(--text);
+  margin-bottom:clamp(28px,4vw,40px);
+  font-weight:bold;line-height:1.5;
+  animation:pulse 2.5s ease-in-out infinite;
+  transition:transform .3s;
+}
+@keyframes pulse{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.04)}
+}
+
+.btns{
+  display:flex;gap:20px;justify-content:center;flex-wrap:wrap;
+  min-height:200px;align-items:center;position:relative;
+  padding:10px 4px;
+}
+button{
+  font-family:inherit;
+  font-size:clamp(1em,2.5vw,1.25em);
+  padding:16px 32px;border:none;border-radius:50px;
+  cursor:pointer;font-weight:bold;
+  box-shadow:0 8px 25px rgba(0,0,0,.18);
+  transition:transform .2s ease, box-shadow .2s ease, filter .2s;
+  user-select:none;
+  touch-action:manipulation;
+}
+button:active{transform:translateY(-2px) scale(.97)}
+#yes{
+  background:linear-gradient(135deg,var(--c1),var(--c4));
+  color:#fff;position:relative;z-index:5;
+}
+#yes:hover{transform:translateY(-6px) scale(1.06);box-shadow:0 14px 35px rgba(79,172,254,.5)}
+#yes:focus-visible,#no:focus-visible{outline:3px solid #fff;outline-offset:3px}
+
+#no{
+  background:linear-gradient(135deg,var(--c3),var(--c5));
+  color:#fff;position:absolute;z-index:10;
+  left:50%;top:50%;
+  transform:translate(-50%,-50%) scale(1);
+  transition:left .18s cubic-bezier(.22,1.4,.36,1),
+             top  .18s cubic-bezier(.22,1.4,.36,1),
+             transform .18s ease-out;
+  will-change:left,top,transform;
+}
+
+#count{
+  margin-top:20px;
+  font-size:clamp(.95em,2vw,1.05em);
+  color:var(--text);font-weight:bold;min-height:28px;
+  line-height:1.6;
+}
+#emojis{
+  font-size:clamp(2.2em,8vw,3em);
+  margin-top:24px;letter-spacing:8px;
+  animation:bounce 1s ease infinite;
+  word-break:break-word;
+}
+@keyframes bounce{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-20px)}
+}
 .hidden{display:none}
-.heart{position:fixed;font-size:2.2em;pointer-events:none;z-index:1000;animation:up 4s ease-in-out}
-@keyframes up{0%{opacity:1;transform:translateY(0) rotate(0)}100%{opacity:0;transform:translateY(-900px) rotate(360deg)}}
+
+.heart{
+  position:fixed;font-size:clamp(1.6em,4vw,2.4em);
+  pointer-events:none;z-index:1000;
+  animation:up 4s ease-in forwards;
+  will-change:transform,opacity;
+}
+@keyframes up{
+  0%{opacity:1;transform:translateY(0) rotate(0) scale(.6)}
+  10%{transform:translateY(-50px) rotate(20deg) scale(1)}
+  100%{opacity:0;transform:translateY(-900px) rotate(360deg) scale(1.1)}
+}
+
 .shake{animation:sh .5s}
-@keyframes sh{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px) rotate(-4deg)}75%{transform:translateX(8px) rotate(4deg)}}
+@keyframes sh{
+  0%,100%{transform:translateX(0)}
+  25%{transform:translateX(-8px) rotate(-4deg)}
+  75%{transform:translateX(8px) rotate(4deg)}
+}
+
+.fallback-link{
+  display:inline-block;margin-top:14px;
+  padding:14px 28px;border-radius:50px;
+  background:linear-gradient(135deg,var(--c1),var(--c4));
+  color:#fff;font-weight:bold;text-decoration:none;
+  font-size:1.05em;
+  box-shadow:0 8px 25px rgba(0,0,0,.18);
+  animation:pulse 2.5s ease-in-out infinite;
+}
+.fallback-link:hover{transform:translateY(-3px) scale(1.04)}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;
+  }
+}
 </style>
 </head>
 <body>
-<div class="bg" style="top:10%;left:10%">💙</div>
-<div class="bg" style="top:70%;left:80%">💫</div>
-<div class="bg" style="top:30%;left:85%">🥺</div>
-<div class="bg" style="top:60%;left:15%">💕</div>
+<div class="bg" style="top:10%;left:10%" aria-hidden="true">💙</div>
+<div class="bg" style="top:70%;left:80%" aria-hidden="true">💫</div>
+<div class="bg" style="top:30%;left:85%" aria-hidden="true">🥺</div>
+<div class="bg" style="top:60%;left:15%" aria-hidden="true">💕</div>
 
-<div class="card">
-  <div id="main">I know you unfollowed me 😔<br>Please follow me again? 🥺</div>
-  <div class="btns">
-    <button id="yes">Okay, I'll follow you back 💙</button>
-    <button id="no">Nope, still not following 🙅</button>
+<main class="card" role="main">
+  <h1 id="main">I know you unfollowed me 😔<br>Please follow me again? 🥺</h1>
+  <div class="btns" id="btns">
+    <button id="yes" type="button" aria-label="Yes, follow back">Okay, I'll follow you back 💙</button>
+    <button id="no"  type="button" aria-label="No, decline">Nope, still not following 🙅</button>
   </div>
-  <div id="count"></div>
-  <div id="emojis" class="hidden"></div>
-</div>
+  <p id="count" aria-live="polite"></p>
+  <div id="emojis" class="hidden" aria-hidden="true"></div>
+</main>
 
 <script>
-const main=document.getElementById('main'),yes=document.getElementById('yes'),
-no=document.getElementById('no'),emojis=document.getElementById('emojis'),
-count=document.getElementById('count'),wrap=document.querySelector('.btns');
+(function(){
+  "use strict";
 
-const msgs=[
-"I know you unfollowed me 😔<br>Please follow me again? 🥺",
-"I promise I'll behave, just refollow me 😢",
-"My feed feels so empty without you there 💙",
-"C'mon, one little tap and we're good again 🥹",
-"I'll like every single one of your posts, I swear 📸",
-"Pretty please? I even said sorry already 🙏",
-"This is getting kind of awkward, not gonna lie 😅",
-"I'm not gonna stop asking, you know that right 💪",
-"Okay but seriously, I miss seeing your posts 🥺",
-"Just one click and we can move on with our lives 💙"
-];
-let idx=0,clicks=0;
-const isMobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  const main   = document.getElementById('main');
+  const yes    = document.getElementById('yes');
+  const no     = document.getElementById('no');
+  const emojis = document.getElementById('emojis');
+  const count  = document.getElementById('count');
+  const wrap   = document.getElementById('btns');
 
-function heart(){
-  const h=document.createElement('div');
-  h.className='heart';
-  h.textContent=['💙','💫','🥺','💕','😊'][Math.floor(Math.random()*5)];
-  h.style.left=Math.random()*window.innerWidth+'px';
-  h.style.top=window.innerHeight+'px';
-  document.body.appendChild(h);
-  setTimeout(()=>h.remove(),4000);
-}
+  const IG_URL = "https://www.instagram.com/nabil_arefin_pial/";
 
-function moveNo(){
-  const r=wrap.getBoundingClientRect(),nb=no.getBoundingClientRect(),yb=yes.getBoundingClientRect();
-  const maxX=r.width-nb.width-20,maxY=r.height-nb.height-20;
-  let nx,ny,tries=0;
-  do{
-    nx=Math.random()*maxX+10; ny=Math.random()*maxY+10; tries++;
-    const nl=r.left+nx,nr=nl+nb.width,nt=r.top+ny,nbo=nt+nb.height;
-    const overlap=!(nr+30<yb.left||nl-30>yb.right||nbo+30<yb.top||nt-30>yb.bottom);
-    if(!overlap||tries>=50) break;
-  }while(true);
-  no.style.left=nx+'px'; no.style.top=ny+'px';
-  clicks++;
-  no.style.transform=`scale(${Math.max(.3,1-clicks*0.1)})`;
-}
+  const msgs = [
+    "I know you unfollowed me 😔<br>Please follow me again? 🥺",
+    "I promise I'll behave, just refollow me 😢",
+    "My feed feels so empty without you there 💙",
+    "C'mon, one little tap and we're good again 🥹",
+    "I'll like every single one of your posts, I swear 📸",
+    "Pretty please? I even said sorry already 🙏",
+    "This is getting kind of awkward, not gonna lie 😅",
+    "I'm not gonna stop asking, you know that right 💪",
+    "Okay but seriously, I miss seeing your posts 🥺",
+    "Just one click and we can move on with our lives 💙"
+  ];
 
-function initNo(){
-  const m=window.innerWidth<=700;
-  no.style.left=m?'50%':'70%'; no.style.top=m?'68%':'50%';
-  no.style.transform='translate(-50%,-50%) scale(1)'; clicks=0;
-}
-initNo(); window.addEventListener('resize',initNo);
+  const hearts = ['💙','💫','🥺','💕','😊','✨','🌟','🥰'];
 
-function bump(){
-  idx=(idx+1)%msgs.length; main.innerHTML=msgs[idx];
-  main.classList.add('shake'); setTimeout(()=>main.classList.remove('shake'),500);
-  count.innerHTML = `Just click follow already 🥺 (tries: ${clicks})`;
-  heart();
-}
+  let idx = 0, clicks = 0;
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-if(!isMobile) no.addEventListener('mouseenter',()=>{moveNo(); bump();});
-no.addEventListener('click',e=>{e.preventDefault(); moveNo(); bump();});
+  // ===== Heart particle =====
+  function spawnHeart(){
+    const h = document.createElement('div');
+    h.className = 'heart';
+    h.textContent = hearts[(Math.random()*hearts.length)|0];
+    h.style.left = (Math.random()*window.innerWidth) + 'px';
+    h.style.top  = window.innerHeight + 'px';
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(), 4000);
+  }
 
-const IG_URL="https://www.instagram.com/nabil_arefin_pial/";
+  // ===== Dodge logic — keeps translate(-50%,-50%) so center pivot is stable =====
+  function moveNo(){
+    const r  = wrap.getBoundingClientRect();
+    const nb = no.getBoundingClientRect();
+    const yb = yes.getBoundingClientRect();
+    if (r.width < 10) return;
 
-yes.addEventListener('click',()=>{
-  main.innerHTML="Yay, thank you for following me again! 🥳💙";
-  emojis.innerHTML="😊💙💫🎉✨🥰💕🌟🎊😘";
-  emojis.classList.remove('hidden');
-  wrap.style.display='none';
-  for(let i=0;i<25;i++) setTimeout(heart,i*150);
-  document.body.style.background='linear-gradient(-45deg,#4facfe,#00f2fe,#4facfe,#a1c4fd)';
+    const maxX = Math.max(0, r.width  - nb.width  - 8);
+    const maxY = Math.max(0, r.height - nb.height - 8);
 
-  let n=3;
-  count.innerHTML=`Opening Instagram in ${n}...`;
-  const timer=setInterval(()=>{
-    n--;
-    if(n>0){
-      count.innerHTML=`Opening Instagram in ${n}...`;
-    }else{
-      clearInterval(timer);
-      count.innerHTML=`Opening Instagram now... 💙`;
-      window.location.href=IG_URL;
-    }
-  },1000);
-});
+    let best = null, bestDist = Infinity, tries = 0;
+    do {
+      const nx = Math.random() * maxX;
+      const ny = Math.random() * maxY;
+      tries++;
+      const nl = r.left + nx, nr = nl + nb.width;
+      const nt = r.top  + ny, nbo = nt + nb.height;
+      const overlap = !(nr + 30 < yb.left || nl - 30 > yb.right ||
+                        nbo + 30 < yb.top || nt - 30 > yb.bottom);
+      if (!overlap) { best = {nx, ny}; break; }
+      const cx = (nl + nr) / 2, cy = (nt + nbo) / 2;
+      const d = Math.hypot(cx - (yb.left+yb.right)/2, cy - (yb.top+yb.bottom)/2);
+      if (d < bestDist) { bestDist = d; best = {nx, ny}; }
+    } while (tries < 50);
+
+    // Place CENTER of button at (best.nx + nb.width/2, best.ny + nb.height/2) inside .btns.
+    // translate(-50%,-50%) keeps the visual center at that exact (left, top).
+    no.style.left = (best.nx + nb.width/2)  + 'px';
+    no.style.top  = (best.ny + nb.height/2) + 'px';
+    no.style.transform = `translate(-50%,-50%) scale(${Math.max(0.4, 1 - clicks*0.08)})`;
+
+    clicks++;
+  }
+
+  function bump(){
+    idx = (idx + 1) % msgs.length;
+    main.innerHTML = msgs[idx];
+    main.classList.remove('shake');
+    void main.offsetWidth;
+    main.classList.add('shake');
+    count.textContent = `Just click follow already 🥺 (tries: ${clicks})`;
+    spawnHeart();
+  }
+
+  // ===== Initial placement =====
+  function initNo(){
+    const m = window.innerWidth <= 700;
+    no.style.left = m ? '50%' : '72%';
+    no.style.top  = m ? '70%' : '50%';
+    no.style.transform = 'translate(-50%,-50%) scale(1)';
+    clicks = 0;
+  }
+  initNo();
+  window.addEventListener('resize', initNo);
+
+  // ===== Events =====
+  if (!isMobile) {
+    no.addEventListener('mouseenter', () => { moveNo(); bump(); });
+  }
+  // Mobile: dodge on first touch so the No button is unreachable on phones too
+  no.addEventListener('touchstart', e => { e.preventDefault(); moveNo(); bump(); }, {passive:false});
+  no.addEventListener('click', e => { e.preventDefault(); moveNo(); bump(); });
+
+  // ===== Yes flow =====
+  yes.addEventListener('click', () => {
+    main.innerHTML = "Yay, thank you for following me again! 🥳💙";
+    emojis.innerHTML = "😊💙💫🎉✨🥰💕🌟🎊😘";
+    emojis.classList.remove('hidden');
+    wrap.style.display = 'none';
+
+    for (let i = 0; i < 30; i++) setTimeout(spawnHeart, i * 120);
+    document.body.style.background = 'linear-gradient(-45deg,#4facfe,#00f2fe,#4facfe,#a1c4fd)';
+
+    // iframe-safe: open in a new tab. If blocked, show a manual link.
+    let opened = false;
+    try {
+      const w = window.open(IG_URL, '_blank', 'noopener,noreferrer');
+      opened = !(!w || w.closed || typeof w.closed === 'undefined');
+    } catch(_) {}
+
+    let n = 3;
+    const render = () => { count.innerHTML = `Opening Instagram in ${n}… 💙`; };
+    render();
+    const timer = setInterval(() => {
+      n--;
+      if (n > 0) { render(); }
+      else {
+        clearInterval(timer);
+        count.innerHTML = 'Opening Instagram now… 💙';
+      }
+    }, 1000);
+  });
+})();
 </script>
 </body>
 </html>
