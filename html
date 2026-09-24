@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Please Follow Me Again 🥺</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Comic Sans MS','Comic Sans',cursive}
+body{min-height:100vh;display:flex;justify-content:center;align-items:center;
+background:linear-gradient(-45deg,#4facfe,#a18cd1,#ff9a9e,#a18cd1,#4facfe);
+background-size:400% 400%;animation:grad 8s ease infinite;overflow:hidden;position:relative;padding:16px}
+@keyframes grad{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.bg{position:fixed;font-size:2em;opacity:.15;pointer-events:none;color:#fff}
+.card{text-align:center;padding:44px 32px;background:rgba(255,255,255,.98);border-radius:30px;
+box-shadow:0 25px 70px rgba(161,140,209,.5);max-width:600px;width:100%;
+animation:in .8s ease-out;position:relative;z-index:10}
+@keyframes in{from{opacity:0;transform:translateY(-40px) scale(.9)}to{opacity:1;transform:translateY(0) scale(1)}}
+#main{font-size:2.3em;color:#a18cd1;margin-bottom:40px;font-weight:bold;line-height:1.5;
+animation:pulse 2s ease-in-out infinite}
+@media(max-width:700px){#main{font-size:1.6em}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+.btns{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;min-height:180px;
+align-items:center;position:relative;padding:10px}
+button{font-family:inherit;font-size:1.25em;padding:18px 34px;border:none;border-radius:50px;
+cursor:pointer;font-weight:bold;box-shadow:0 8px 25px rgba(0,0,0,.2);transition:transform .2s}
+#yes{background:linear-gradient(135deg,#4facfe,#00f2fe);color:#fff;position:relative;z-index:5}
+#yes:hover{transform:translateY(-6px) scale(1.08)}
+#no{background:linear-gradient(135deg,#ff9a9e,#ff7eb3);color:#fff;position:absolute;
+transition:all .15s ease-out;z-index:10}
+#count{margin-top:18px;font-size:1.05em;color:#a18cd1;font-weight:bold;min-height:28px}
+#emojis{font-size:3em;margin-top:24px;letter-spacing:8px;animation:bounce 1s ease infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
+.hidden{display:none}
+.heart{position:fixed;font-size:2.2em;pointer-events:none;z-index:1000;animation:up 4s ease-in-out}
+@keyframes up{0%{opacity:1;transform:translateY(0) rotate(0)}100%{opacity:0;transform:translateY(-900px) rotate(360deg)}}
+.shake{animation:sh .5s}
+@keyframes sh{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px) rotate(-4deg)}75%{transform:translateX(8px) rotate(4deg)}}
+</style>
+</head>
+<body>
+<div class="bg" style="top:10%;left:10%">💙</div>
+<div class="bg" style="top:70%;left:80%">💫</div>
+<div class="bg" style="top:30%;left:85%">🥺</div>
+<div class="bg" style="top:60%;left:15%">💕</div>
+
+<div class="card">
+  <div id="main">I know you unfollowed me 😔<br>Please follow me again? 🥺</div>
+  <div class="btns">
+    <button id="yes">Okay, I'll follow you back 💙</button>
+    <button id="no">Nope, still not following 🙅</button>
+  </div>
+  <div id="count"></div>
+  <div id="emojis" class="hidden"></div>
+</div>
+
+<script>
+const main=document.getElementById('main'),yes=document.getElementById('yes'),
+no=document.getElementById('no'),emojis=document.getElementById('emojis'),
+count=document.getElementById('count'),wrap=document.querySelector('.btns');
+
+const msgs=[
+"I know you unfollowed me 😔<br>Please follow me again? 🥺",
+"I promise I'll behave, just refollow me 😢",
+"My feed feels so empty without you there 💙",
+"C'mon, one little tap and we're good again 🥹",
+"I'll like every single one of your posts, I swear 📸",
+"Pretty please? I even said sorry already 🙏",
+"This is getting kind of awkward, not gonna lie 😅",
+"I'm not gonna stop asking, you know that right 💪",
+"Okay but seriously, I miss seeing your posts 🥺",
+"Just one click and we can move on with our lives 💙"
+];
+let idx=0,clicks=0;
+const isMobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+function heart(){
+  const h=document.createElement('div');
+  h.className='heart';
+  h.textContent=['💙','💫','🥺','💕','😊'][Math.floor(Math.random()*5)];
+  h.style.left=Math.random()*window.innerWidth+'px';
+  h.style.top=window.innerHeight+'px';
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),4000);
+}
+
+function moveNo(){
+  const r=wrap.getBoundingClientRect(),nb=no.getBoundingClientRect(),yb=yes.getBoundingClientRect();
+  const maxX=r.width-nb.width-20,maxY=r.height-nb.height-20;
+  let nx,ny,tries=0;
+  do{
+    nx=Math.random()*maxX+10; ny=Math.random()*maxY+10; tries++;
+    const nl=r.left+nx,nr=nl+nb.width,nt=r.top+ny,nbo=nt+nb.height;
+    const overlap=!(nr+30<yb.left||nl-30>yb.right||nbo+30<yb.top||nt-30>yb.bottom);
+    if(!overlap||tries>=50) break;
+  }while(true);
+  no.style.left=nx+'px'; no.style.top=ny+'px';
+  clicks++;
+  no.style.transform=`scale(${Math.max(.3,1-clicks*0.1)})`;
+}
+
+function initNo(){
+  const m=window.innerWidth<=700;
+  no.style.left=m?'50%':'70%'; no.style.top=m?'68%':'50%';
+  no.style.transform='translate(-50%,-50%) scale(1)'; clicks=0;
+}
+initNo(); window.addEventListener('resize',initNo);
+
+function bump(){
+  idx=(idx+1)%msgs.length; main.innerHTML=msgs[idx];
+  main.classList.add('shake'); setTimeout(()=>main.classList.remove('shake'),500);
+  count.innerHTML = `Just click follow already 🥺 (tries: ${clicks})`;
+  heart();
+}
+
+if(!isMobile) no.addEventListener('mouseenter',()=>{moveNo(); bump();});
+no.addEventListener('click',e=>{e.preventDefault(); moveNo(); bump();});
+
+const IG_URL="https://www.instagram.com/nabil_arefin_pial/";
+
+yes.addEventListener('click',()=>{
+  main.innerHTML="Yay, thank you for following me again! 🥳💙";
+  emojis.innerHTML="😊💙💫🎉✨🥰💕🌟🎊😘";
+  emojis.classList.remove('hidden');
+  wrap.style.display='none';
+  for(let i=0;i<25;i++) setTimeout(heart,i*150);
+  document.body.style.background='linear-gradient(-45deg,#4facfe,#00f2fe,#4facfe,#a1c4fd)';
+
+  let n=3;
+  count.innerHTML=`Opening Instagram in ${n}...`;
+  const timer=setInterval(()=>{
+    n--;
+    if(n>0){
+      count.innerHTML=`Opening Instagram in ${n}...`;
+    }else{
+      clearInterval(timer);
+      count.innerHTML=`Opening Instagram now... 💙`;
+      window.location.href=IG_URL;
+    }
+  },1000);
+});
+</script>
+</body>
+</html>
