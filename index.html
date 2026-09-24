@@ -294,13 +294,7 @@ button:active{transform:translateY(-2px) scale(.97)}
     for (let i = 0; i < 30; i++) setTimeout(spawnHeart, i * 120);
     document.body.style.background = 'linear-gradient(-45deg,#4facfe,#00f2fe,#4facfe,#a1c4fd)';
 
-    // iframe-safe: open in a new tab. If blocked, show a manual link.
-    let opened = false;
-    try {
-      const w = window.open(IG_URL, '_blank', 'noopener,noreferrer');
-      opened = !(!w || w.closed || typeof w.closed === 'undefined');
-    } catch(_) {}
-
+    // Countdown first, then redirect after it finishes
     let n = 3;
     const render = () => { count.innerHTML = `Opening Instagram in ${n}… 💙`; };
     render();
@@ -310,6 +304,9 @@ button:active{transform:translateY(-2px) scale(.97)}
       else {
         clearInterval(timer);
         count.innerHTML = 'Opening Instagram now… 💙';
+        // Redirect AFTER countdown completes
+        try { window.open(IG_URL, '_blank', 'noopener,noreferrer'); }
+        catch(_) {}
       }
     }, 1000);
   });
